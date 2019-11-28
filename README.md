@@ -1,0 +1,1 @@
+# next-i18next-serverless
