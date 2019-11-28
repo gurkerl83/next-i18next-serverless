@@ -1,15 +1,16 @@
 /* tslint:disable no-explicit-any */
+import i18next from 'i18next';
+import { LinkProps } from 'next/link';
+import { SingletonRouter } from 'next/router';
+import React from 'react';
+import { TransProps, useTranslation, withTranslation } from 'react-i18next';
 
-import * as React from 'react'
-import {
-  useTranslation,
-  TransProps,
-  withTranslation,
-  WithTranslation
-} from 'react-i18next'
-import { LinkProps } from 'next/link'
-import { SingletonRouter } from 'next/router'
-import i18next from 'i18next'
+declare module 'i18next' {
+  interface InitOptions {
+    allLanguages?: string[];
+    defaultLanguage?: string;
+  }
+}
 
 export type InitConfig = {
   browserLanguageDetection?: boolean;
@@ -23,46 +24,58 @@ export type InitConfig = {
   localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
-} & i18next.InitOptions
+} & i18next.InitOptions;
 
 export type Config = {
   fallbackLng: boolean;
   allLanguages: string[];
   whitelist: string[];
   preload: string[];
-} & InitConfig
+} & InitConfig;
 
-export type Trans = (props: TransProps) => any
-export type Link = React.ComponentClass<LinkProps>
-export type Router = SingletonRouter
-export type UseTranslation = typeof useTranslation
-export type AppWithTranslation = <P extends object>(Component: React.ComponentType<P> | React.ElementType<P>) => any
-export type TFunction = i18next.TFunction
-export type I18n = i18next.i18n
-export type WithTranslationHocType = typeof withTranslation
-export type WithTranslation = WithTranslation
+export type Trans = (props: TransProps) => any;
+export type Link = React.ComponentClass<LinkProps>;
+export type Router = SingletonRouter;
+export type UseTranslation = typeof useTranslation;
+export type AppWithTranslation = <P extends object>(
+  Component: React.ComponentType<P> | React.ElementType<P>
+) => any;
+export type TFunction = i18next.TFunction;
+export type I18n = i18next.i18n;
+export type WithTranslationHocType = typeof withTranslation;
+// export type WithTranslation = WithTranslation;
 
 declare class NextI18Next {
   constructor(config: InitConfig);
-  Trans: Trans
-  Link: Link
-  Router: Router
-  i18n: I18n
-  config: Config
-  useTranslation: UseTranslation
-  withTranslation: WithTranslationHocType
-  appWithTranslation: AppWithTranslation
+  Trans: Trans;
+  Link: Link;
+  Router: Router;
+  i18n: I18n;
+  config: Config;
+  useTranslation: UseTranslation;
+  withTranslation: WithTranslationHocType;
+  appWithTranslation: AppWithTranslation;
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      i18n?: I18n & {
-        options: Config;
-      };
-      lng?: string;
-    }
+// declare global {
+//   namespace Express {
+//     interface Request {
+//       i18n?: I18n & {
+//         options: Config;
+//       };
+//       lng?: string;
+//     }
+//   }
+// }
+
+declare module 'http' {
+  interface IncomingMessage {
+    // i18n: I18n & {
+    //   options: Config;
+    // };
+    i18n: I18n;
+    lng: string;
   }
 }
 
-export default NextI18Next
+export default NextI18Next;

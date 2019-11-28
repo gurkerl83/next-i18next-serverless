@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "noEmit": true,
-    "lib": ["esnext", "dom"],
+    "module": "commonjs",
     "target": "es5",
-    "jsx": "react"
+    "lib": ["es6", "dom"],
+    "jsx": "react",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noEmit": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "__tests__/types.test.tsx",
-    "src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }
