@@ -40,11 +40,6 @@
     "build-ts": "tsc",
     "build_2": "rm -rf dist && npm run build-ts"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn test"
-    }
-  },
   "bundlesize": [
     {
       "path": "./examples/simple/.next/static/chunks/commons*.js",
