@@ -6,13 +6,13 @@ import URL from 'url';
 import NextI18Next from '../../types';
 import { handle } from '../handler/handler';
 import {
-    addSubpath,
-    lngFromReq,
-    redirectWithoutCache,
-    removeSubpath,
-    subpathFromLng,
-    subpathIsPresent,
-    subpathIsRequired,
+  addSubpath,
+  lngFromReq,
+  redirectWithoutCache,
+  removeSubpath,
+  subpathFromLng,
+  subpathIsPresent,
+  subpathIsRequired,
 } from '../utils';
 
 // import { handle } from 'i18next-node-middleware-test';
@@ -22,11 +22,16 @@ const route = pathMatch();
 export const nextI18NextMiddleware = (
   nexti18next: NextI18Next
 ): Array<Handler<IncomingMessage, ServerResponse>> => {
+  console.log('nexti18next in nextI18NextMiddleware: ', nexti18next);
+
   const { config, i18n } = nexti18next;
   const { allLanguages, ignoreRoutes, localeSubpaths } = config;
 
-  const isI18nRoute = (req: IncomingMessage) => ignoreRoutes.every(x => !req.url.startsWith(x));
-  const localeSubpathRoute = route(`/:subpath(${Object.values(localeSubpaths).join('|')})(.*)`);
+  const isI18nRoute = (req: IncomingMessage) =>
+    ignoreRoutes.every(x => !req.url.startsWith(x));
+  const localeSubpathRoute = route(
+    `/:subpath(${Object.values(localeSubpaths).join('|')})(.*)`
+  );
 
   const middleware = [];
 
@@ -36,12 +41,14 @@ export const nextI18NextMiddleware = (
     each request
   */
   if (!config.serverLanguageDetection) {
-    middleware.push((req: IncomingMessage, _res: ServerResponse, next: Next) => {
-      if (isI18nRoute(req)) {
-        req.lng = config.defaultLanguage;
+    middleware.push(
+      (req: IncomingMessage, _res: ServerResponse, next: Next) => {
+        if (isI18nRoute(req)) {
+          req.lng = config.defaultLanguage;
+        }
+        next();
       }
-      next();
-    });
+    );
   }
 
   /*
@@ -57,13 +64,19 @@ export const nextI18NextMiddleware = (
       let currentLng = lngFromReq(req);
       const currentLngSubpath = subpathFromLng(config, currentLng);
       const currentLngRequiresSubpath = subpathIsRequired(config, currentLng);
-      const currentLngSubpathIsPresent = subpathIsPresent(req.url, currentLngSubpath);
+      const currentLngSubpathIsPresent = subpathIsPresent(
+        req.url,
+        currentLngSubpath
+      );
 
       const lngFromCurrentSubpath = allLanguages.find((l: string) =>
         subpathIsPresent(req.url, subpathFromLng(config, l))
       );
 
-      if (lngFromCurrentSubpath !== undefined && lngFromCurrentSubpath !== currentLng) {
+      if (
+        lngFromCurrentSubpath !== undefined &&
+        lngFromCurrentSubpath !== currentLng
+      ) {
         /*
           If a user has hit a subpath which does not
           match their language, give preference to
@@ -76,7 +89,10 @@ export const nextI18NextMiddleware = (
           If a language subpath is required and
           not present, prepend correct subpath
         */
-        return redirectWithoutCache(res, addSubpath(req.url, currentLngSubpath));
+        return redirectWithoutCache(
+          res,
+          addSubpath(req.url, currentLngSubpath)
+        );
       }
 
       /*

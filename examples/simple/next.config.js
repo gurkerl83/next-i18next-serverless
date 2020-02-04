@@ -8,7 +8,12 @@ module.exports = {
 
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 
-  experimental: { modern: true, documentMiddleware: true },
+  experimental: { documentMiddleware: true },
+
+  publicRuntimeConfig: {
+    PROJECT_ROOT: __dirname,
+    PROJECT_ROOT_2: 'Hello'
+  },
 
   // webpack: (config, options) => {
   webpack: (config, { isServer }) => {

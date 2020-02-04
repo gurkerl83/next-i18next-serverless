@@ -22,7 +22,8 @@ const config = {
   interpolation: {
     escapeValue: false,
     formatSeparator: ',',
-    format: (value, format) => (format === 'uppercase' ? value.toUpperCase() : value)
+    format: (value, format) =>
+      format === 'uppercase' ? value.toUpperCase() : value
   },
   browserLanguageDetection: true,
   serverLanguageDetection: true,
@@ -41,6 +42,7 @@ const config = {
   },
   strictMode: true,
   errorStackTraceLimit: 0,
+  shallowRender: false,
   get initImmediate() {
     return !isServer();
   }

@@ -35,8 +35,9 @@ export default class NextI18Next {
   readonly consoleMessage: () => void;
   readonly withNamespaces: () => void;
 
-  constructor(userConfig: InitConfig) {
-    this.config = createConfig(userConfig);
+  constructor(nextConfig: any, userConfig: InitConfig) {
+    debugger;
+    this.config = createConfig(nextConfig, userConfig);
     this.consoleMessage = consoleMessage.bind(this);
 
     /* Validation */
@@ -54,7 +55,10 @@ export default class NextI18Next {
     this.i18n = createI18NextClient(this.config);
     this.appWithTranslation = appWithTranslation.bind(this);
     this.withTranslation = (namespace, options) => Component =>
-      hoistNonReactStatics(withTranslation(namespace, options)(Component), Component);
+      hoistNonReactStatics(
+        withTranslation(namespace, options)(Component),
+        Component
+      );
 
     const nextI18NextInternals = { config: this.config, i18n: this.i18n };
     this.Link = withInternals(Link, nextI18NextInternals) as LinkType;

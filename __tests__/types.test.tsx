@@ -1,23 +1,16 @@
-import React from 'react'
+import React from 'react';
+
+import NextI18Next, { WithTranslation } from '../types';
 
 // Import all types to ensure they exist
-import NextI18Next, {
-  AppWithTranslation,
-  Config,
-  I18n,
-  InitConfig,
-  TFunction,
-  WithTranslation,
-} from '../types'
-
-const DummyComponent: React.FC<{} & WithTranslation> = () => <div />
+const DummyComponent: React.FC<{} & WithTranslation> = () => <div />;
 
 const emptyConfig = {
   defaultLanguage: null,
-  otherLanguages: [],
-}
+  otherLanguages: []
+};
 
 // Instantiate instance and call methods upon it
-const Instance = new NextI18Next(emptyConfig)
-Instance.appWithTranslation(DummyComponent)
-Instance.withTranslation('common')(DummyComponent)
+const Instance = new NextI18Next(emptyConfig);
+Instance.appWithTranslation(DummyComponent);
+Instance.withTranslation('common')(DummyComponent);

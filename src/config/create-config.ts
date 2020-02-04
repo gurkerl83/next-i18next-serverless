@@ -1,18 +1,30 @@
 import fs from 'fs';
-import getConfig from 'next/config';
 import path from 'path';
 
 import { isServer } from '../utils';
 import defaultConfig from './default-config';
 
+// import getConfig from 'next/config';
 const isBrowser = typeof window !== 'undefined';
 
 const deepMergeObjects = ['backend', 'detection'];
 
-export default userConfig => {
-  const { publicRuntimeConfig } = getConfig();
+export default (nextConfig, userConfig) => {
+  // const { publicRuntimeConfig } = getConfig();
 
-  const { PROJECT_ROOT } = publicRuntimeConfig;
+  // const { PROJECT_ROOT } = publicRuntimeConfig;
+
+  // console.log('PROJECT_ROOT from i18n-next: ', PROJECT_ROOT);
+
+  console.log('nextConfig in create-config is: ', nextConfig);
+
+  let PROJECT_ROOT;
+  if (nextConfig != null) {
+    const { publicRuntimeConfig } = nextConfig;
+    PROJECT_ROOT = publicRuntimeConfig.PROJECT_ROOT;
+  } else {
+    PROJECT_ROOT = process.cwd();
+  }
 
   console.log('PROJECT_ROOT from i18n-next: ', PROJECT_ROOT);
 
@@ -53,7 +65,7 @@ export default userConfig => {
     const locales = !isBrowser
       ? fs.existsSync(
           path.join(
-            publicRuntimeConfig.PROJECT_ROOT,
+            PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
             './locales/en/common.json'
           )
         )
@@ -62,7 +74,7 @@ export default userConfig => {
     const publicLocales = !isBrowser
       ? fs.existsSync(
           path.join(
-            publicRuntimeConfig.PROJECT_ROOT,
+            PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
             './public/locales/en/common.json'
           )
         )
@@ -83,7 +95,7 @@ export default userConfig => {
       typeof combinedConfig.defaultNS === 'string'
     ) {
       const defaultNSPath = path.join(
-        PROJECT_ROOT,
+        PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
         `${localePathPublic}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
       );
       const defaultNSExists = fs.existsSync(defaultNSPath);
@@ -95,11 +107,11 @@ export default userConfig => {
     // Set server side backend
     combinedConfig.backend = {
       loadPath: path.join(
-        PROJECT_ROOT,
+        PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
         `${localePathPublic}/${localeStructure}.${localeExtension}`
       ),
       addPath: path.join(
-        PROJECT_ROOT,
+        PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
         `${localePathPublic}/${localeStructure}.missing.${localeExtension}`
       )
     };
@@ -110,7 +122,10 @@ export default userConfig => {
       const getAllNamespaces = p =>
         fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''));
       combinedConfig.ns = getAllNamespaces(
-        path.join(PROJECT_ROOT, `${localePathPublic}/${defaultLanguage}`)
+        path.join(
+          PROJECT_ROOT ? PROJECT_ROOT : process.cwd(),
+          `${localePathPublic}/${defaultLanguage}`
+        )
       );
     }
   } else {

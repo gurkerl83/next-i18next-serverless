@@ -3,7 +3,7 @@ import i18next from 'i18next';
 import { LinkProps } from 'next/link';
 import { SingletonRouter } from 'next/router';
 import React from 'react';
-import { TransProps, useTranslation, withTranslation } from 'react-i18next';
+import { TransProps, useTranslation, WithTranslation as ReactI18nextWithTranslation, withTranslation } from 'react-i18next';
 
 declare module 'i18next' {
   interface InitOptions {
@@ -24,6 +24,7 @@ export type InitConfig = {
   localeSubpaths?: Record<string, string>;
   use?: any[];
   customDetectors?: any[];
+  shallowRender?: boolean;
 } & i18next.InitOptions;
 
 export type Config = {
@@ -32,6 +33,11 @@ export type Config = {
   whitelist: string[];
   preload: string[];
 } & InitConfig;
+
+export interface NextI18NextInternals {
+  config: Config;
+  i18n: I18n;
+}
 
 export type Trans = (props: TransProps) => any;
 export type Link = React.ComponentClass<LinkProps>;
@@ -43,7 +49,7 @@ export type AppWithTranslation = <P extends object>(
 export type TFunction = i18next.TFunction;
 export type I18n = i18next.i18n;
 export type WithTranslationHocType = typeof withTranslation;
-// export type WithTranslation = WithTranslation;
+export type WithTranslation = ReactI18nextWithTranslation;
 
 declare class NextI18Next {
   constructor(config: InitConfig);
