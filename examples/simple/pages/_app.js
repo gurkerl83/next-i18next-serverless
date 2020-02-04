@@ -8,6 +8,8 @@ import getNextI18NextInstance from '../i18n';
 // const { PROJECT_ROOT } = publicRuntimeConfig;
 // const { appWithTranslation } = getNextI18NextInstance(PROJECT_ROOT);
 
+//
+
 console.log('getNextI18NextInstance definition: ', getNextI18NextInstance);
 
 console.log('getConfig(): ', getConfig());
