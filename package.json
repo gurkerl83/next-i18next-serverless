@@ -1,6 +1,6 @@
 {
   "name": "next-i18next-serverless",
-  "version": "1.1.100",
+  "version": "1.1.101",
   "repository": "git@github.com:gurkerl83/next-i18next-serverless.git",
   "author": "Isaac Hinman <isaac@isaachinman.com>",
   "main": "dist/commonjs/index.js",
@@ -91,7 +91,7 @@
     "i18next-node-fs-backend": "2.1.0",
     "i18next-xhr-backend": "3.0.0",
     "lodash": "^4.17.15",
-    "next": "^9.0.9-canary.0",
+    "next": "^9.2.2-canary.10",
     "path-match": "^1.2.4",
     "prop-types": "^15.6.2",
     "raw-body": "^2.4.1",

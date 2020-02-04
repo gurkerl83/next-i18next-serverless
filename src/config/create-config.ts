@@ -1,12 +1,21 @@
 import fs from 'fs';
+import getConfig from 'next/config';
 import path from 'path';
 
 import { isServer } from '../utils';
 import defaultConfig from './default-config';
 
+const isBrowser = typeof window !== 'undefined';
+
 const deepMergeObjects = ['backend', 'detection'];
 
 export default userConfig => {
+  const { publicRuntimeConfig } = getConfig();
+
+  const { PROJECT_ROOT } = publicRuntimeConfig;
+
+  console.log('PROJECT_ROOT from i18n-next: ', PROJECT_ROOT);
+
   if (typeof userConfig.localeSubpaths === 'string') {
     throw new Error(
       'The localeSubpaths option has been changed to an object. Please refer to documentation.'
@@ -37,13 +46,44 @@ export default userConfig => {
     // const fs = require('fs');
     // const path = require('path');
 
-    const localePathPublic = `/public/${localePath}`;
+    // const localePathPublic = `/public/${localePath}`;
+
+    let localePathPublic = ``;
+
+    const locales = !isBrowser
+      ? fs.existsSync(
+          path.join(
+            publicRuntimeConfig.PROJECT_ROOT,
+            './locales/en/common.json'
+          )
+        )
+      : false;
+
+    const publicLocales = !isBrowser
+      ? fs.existsSync(
+          path.join(
+            publicRuntimeConfig.PROJECT_ROOT,
+            './public/locales/en/common.json'
+          )
+        )
+      : false;
+
+    if (locales) {
+      localePathPublic = localePath;
+    }
+
+    if (publicLocales) {
+      localePathPublic = `/public/${localePath}`;
+    }
 
     // Validate defaultNS
     // https://github.com/isaachinman/next-i18next/issues/358
-    if (process.env.NODE_ENV !== 'production' && typeof combinedConfig.defaultNS === 'string') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      typeof combinedConfig.defaultNS === 'string'
+    ) {
       const defaultNSPath = path.join(
-        process.cwd(),
+        PROJECT_ROOT,
         `${localePathPublic}/${defaultLanguage}/${combinedConfig.defaultNS}.${localeExtension}`
       );
       const defaultNSExists = fs.existsSync(defaultNSPath);
@@ -52,29 +92,25 @@ export default userConfig => {
       }
     }
 
-    console.log('Node env: ', process.env.NODE_ENV);
-
-    console.log('Server side backend');
-
     // Set server side backend
     combinedConfig.backend = {
       loadPath: path.join(
-        process.cwd(),
+        PROJECT_ROOT,
         `${localePathPublic}/${localeStructure}.${localeExtension}`
       ),
       addPath: path.join(
-        process.cwd(),
+        PROJECT_ROOT,
         `${localePathPublic}/${localeStructure}.missing.${localeExtension}`
       )
     };
 
     // Set server side preload (languages and namespaces)
     combinedConfig.preload = allLanguages;
-    if (!combinedConfig.ns) {
+    if (!combinedConfig.ns && !isBrowser) {
       const getAllNamespaces = p =>
         fs.readdirSync(p).map(file => file.replace(`.${localeExtension}`, ''));
       combinedConfig.ns = getAllNamespaces(
-        path.join(process.cwd(), `${localePathPublic}/${defaultLanguage}`)
+        path.join(PROJECT_ROOT, `${localePathPublic}/${defaultLanguage}`)
       );
     }
   } else {
@@ -92,7 +128,9 @@ export default userConfig => {
   // Set fallback language to defaultLanguage in production
   if (!userConfig.fallbackLng) {
     combinedConfig.fallbackLng =
-      process.env.NODE_ENV === 'production' ? combinedConfig.defaultLanguage : false;
+      process.env.NODE_ENV === 'production'
+        ? combinedConfig.defaultLanguage
+        : false;
   }
 
   // Deep merge with overwrite - goes last
