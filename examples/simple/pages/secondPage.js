@@ -1,11 +1,10 @@
-import getConfig from 'next/config';
 import React from 'react';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import getNextI18NextInstance from '../i18n';
 
-const { useTranslation, Link } = getNextI18NextInstance(getConfig());
+const { Link, useTranslation } = getNextI18NextInstance;
 
 const SecondPage = () => {
   const { t } = useTranslation(['secondPage', 'footer']);
@@ -22,6 +21,8 @@ const SecondPage = () => {
     </React.Fragment>
   );
 };
+
+// Replace higher-order component in favor of hook
 
 /*
 SecondPage.getInitialProps = async () => ({

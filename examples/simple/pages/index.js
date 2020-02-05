@@ -1,15 +1,12 @@
-import getConfig from 'next/config';
 import React from 'react';
 
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import getNextI18NextInstance from '../i18n';
 
-const { i18n, Link, useTranslation } = getNextI18NextInstance(getConfig());
+const { i18n, Link, useTranslation } = getNextI18NextInstance;
 
 const Homepage = () => {
-  console.log('useTranslation is: ', useTranslation);
-
   const { t } = useTranslation(['common', 'footer']);
 
   return (
@@ -34,6 +31,8 @@ const Homepage = () => {
     </React.Fragment>
   );
 };
+
+// Replace higher-order component in favor of hook
 
 // Homepage.getInitialProps = async () => ({
 //   namespacesRequired: ['common', 'footer']
