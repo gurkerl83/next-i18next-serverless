@@ -7,6 +7,7 @@ import {
   I18n,
   InitConfig,
   Link as LinkType,
+  NextRuntimeConfig,
   Router,
   Trans as TransType,
   UseTranslation,
@@ -35,9 +36,9 @@ export default class NextI18Next {
   readonly consoleMessage: () => void;
   readonly withNamespaces: () => void;
 
-  constructor(nextConfig: any, userConfig: InitConfig) {
+  constructor(runtimeConfig: NextRuntimeConfig, userConfig: InitConfig) {
     debugger;
-    this.config = createConfig(nextConfig, userConfig);
+    this.config = createConfig(runtimeConfig, userConfig);
     this.consoleMessage = consoleMessage.bind(this);
 
     /* Validation */

@@ -12,6 +12,11 @@ declare module 'i18next' {
   }
 }
 
+export type NextRuntimeConfig = {
+  publicRuntimeConfig: Record<string, string>;
+  serverRuntimeConfig: Record<string, string>;
+};
+
 export type InitConfig = {
   browserLanguageDetection?: boolean;
   serverLanguageDetection?: boolean;
@@ -25,6 +30,8 @@ export type InitConfig = {
   use?: any[];
   customDetectors?: any[];
   shallowRender?: boolean;
+  // ignore this for the moment
+  runtimeConfig?: NextRuntimeConfig;
 } & i18next.InitOptions;
 
 export type Config = {
@@ -52,7 +59,7 @@ export type WithTranslationHocType = typeof withTranslation;
 export type WithTranslation = ReactI18nextWithTranslation;
 
 declare class NextI18Next {
-  constructor(config: InitConfig);
+  constructor(runtimeConfig: NextRuntimeConfig, config: InitConfig);
   Trans: Trans;
   Link: Link;
   Router: Router;
