@@ -3775,10 +3775,10 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-next-i18next-serverless@^1.1.125:
-  version "1.1.125"
-  resolved "https://registry.yarnpkg.com/next-i18next-serverless/-/next-i18next-serverless-1.1.125.tgz#f00ab0c3185a28938f20f46f596611ee1943408b"
-  integrity sha512-RXlPaVugsl8/CDOhkGmo5h5CugLn3QGbPwBw+g0fotTtd2U5RCwH4I7kAoeBViKK5/TEEyWly/4W7TexVvK+Rw==
+next-i18next-serverless@^1.1.134:
+  version "1.1.134"
+  resolved "https://registry.yarnpkg.com/next-i18next-serverless/-/next-i18next-serverless-1.1.134.tgz#674cf4e4d8a077416e594ddcc08c0ff6f40cc057"
+  integrity sha512-SD6dOPZgFqckWYS63awD9vQ+BMwW9UVpkqtG2itsJuvAO44mpC27OAcoRtm706T2QFseYFCksvIFrLV7vbHb3w==
   dependencies:
     compose-middleware "^5.0.1"
     cookies "^0.7.3"
