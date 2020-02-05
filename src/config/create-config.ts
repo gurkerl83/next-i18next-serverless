@@ -58,6 +58,16 @@ export default (runtimeConfig: NextRuntimeConfig, userConfig: InitConfig) => {
 
     let localePathPublic = ``;
 
+    // TODO: Identify a cleaner approach, there are some problems because
+
+    // LOCAL
+    // dev / prod mode (next dev vs next start) and deployment through
+
+    // NOW
+    // build phase / serving phase
+
+    // differentiate somehow.
+
     const locales = !isBrowser
       ? fs.existsSync(path.join(rootDir, './locales/en/common.json'))
       : false;
@@ -66,10 +76,12 @@ export default (runtimeConfig: NextRuntimeConfig, userConfig: InitConfig) => {
       ? fs.existsSync(path.join(rootDir, './public/locales/en/common.json'))
       : false;
 
+    // Needed for NOW serving phase
     if (locales) {
       localePathPublic = localePath;
     }
 
+    // Needed for LOCAL dev / prod mode as well as for NOW build phasee
     if (publicLocales) {
       localePathPublic = `/public/${localePath}`;
     }
